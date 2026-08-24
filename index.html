@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MEMORANDO OPERATIVO — MK ULTRA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Special+Elite&family=Oswald:wght@500;600;700&display=swap');
+
+:root{
+  --deskA:#221d17;
+  --deskB:#181410;
+  --paper:#e6dab8;
+  --paper-shade:#d4c49b;
+  --paper-stain:#c3ac78;
+  --ink:#2b2416;
+  --ink-faint:#5b5138;
+  --stamp:#7a2e22;
+  --stamp2:#4a4326;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:36px 18px;
+  background:
+    radial-gradient(ellipse at 20% 15%, rgba(255,255,255,0.03), transparent 40%),
+    radial-gradient(ellipse at 80% 90%, rgba(0,0,0,0.35), transparent 50%),
+    linear-gradient(160deg, var(--deskA), var(--deskB));
+  font-family:'Special Elite', 'Courier New', monospace;
+}
+
+.sheet-wrap{
+  position:relative;
+  width:100%;
+  max-width:620px;
+  transform:rotate(-0.6deg);
+}
+
+.paperclip{
+  position:absolute;
+  top:-14px;
+  left:26px;
+  width:34px;
+  height:64px;
+  z-index:6;
+  filter:drop-shadow(0 3px 3px rgba(0,0,0,0.4));
+}
+
+.sheet{
+  background:
+    radial-gradient(circle at 12% 8%, var(--paper-stain) 0%, transparent 14%),
+    radial-gradient(circle at 92% 85%, var(--paper-stain) 0%, transparent 18%),
+    radial-gradient(circle at 70% 5%, rgba(0,0,0,0.05) 0%, transparent 10%),
+    linear-gradient(178deg, var(--paper) 0%, var(--paper-shade) 100%);
+  border:1px solid rgba(0,0,0,0.18);
+  box-shadow:
+    0 2px 0 rgba(255,255,255,0.15) inset,
+    0 24px 50px rgba(0,0,0,0.55),
+    0 2px 8px rgba(0,0,0,0.3);
+  position:relative;
+  overflow:hidden;
+}
+
+.sheet::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.045'/></svg>");
+  pointer-events:none;
+  mix-blend-mode:multiply;
+}
+
+.stamp{
+  position:absolute;
+  top:22px;
+  right:20px;
+  border:3px solid var(--stamp);
+  color:var(--stamp);
+  font-family:'Oswald', sans-serif;
+  font-weight:700;
+  letter-spacing:3px;
+  font-size:13px;
+  padding:6px 14px;
+  transform:rotate(-9deg);
+  opacity:0.82;
+  mix-blend-mode:multiply;
+  z-index:5;
+  border-radius:2px;
+}
+
+.topbar{
+  border-bottom:2px solid var(--ink);
+  padding:22px 30px 12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  font-size:10.5px;
+  letter-spacing:1.5px;
+  color:var(--ink-faint);
+}
+
+.doc-id{text-align:right;line-height:1.6;}
+
+.body-pad{padding:26px 30px 30px;color:var(--ink);}
+
+.eyebrow{
+  font-size:11px;
+  letter-spacing:2.5px;
+  color:var(--ink-faint);
+  margin-bottom:8px;
+}
+
+.emblem-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.emblem{flex-shrink:0; opacity:0.85;}
+
+h1{
+  font-family:'Oswald', sans-serif;
+  font-weight:700;
+  font-size:clamp(22px,4.6vw,29px);
+  letter-spacing:1px;
+  color:var(--ink);
+  text-transform:uppercase;
+  line-height:1.15;
+}
+
+.intro{
+  font-size:13px;
+  line-height:1.85;
+  color:var(--ink-faint);
+  margin-bottom:20px;
+  border-left:2px solid var(--ink-faint);
+  padding-left:12px;
+}
+
+.cipher-box{
+  background:rgba(0,0,0,0.045);
+  border:1px dashed var(--ink-faint);
+  padding:16px 15px;
+  font-size:13.5px;
+  line-height:1.9;
+  letter-spacing:0.4px;
+  color:var(--ink-faint);
+  min-height:110px;
+  white-space:pre-wrap;
+  word-break:break-word;
+  position:relative;
+}
+
+.cipher-box::before{
+  content:"FRAGMENTO INTERCEPTADO — SIN DESCIFRAR";
+  position:absolute;
+  top:-9px;
+  left:12px;
+  background:var(--paper);
+  padding:0 8px;
+  font-size:8.5px;
+  letter-spacing:1.5px;
+  color:var(--stamp);
+}
+.cipher-box.decoded::before{
+  content:"TRANSCRIPCIÓN CONFIRMADA";
+  color:var(--ink-faint);
+}
+.cipher-box.decoded{
+  color:var(--ink);
+  border-style:solid;
+}
+
+.tuner{margin-top:20px;}
+
+.tuner-label{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  letter-spacing:1.5px;
+  color:var(--ink-faint);
+  margin-bottom:10px;
+}
+
+.freq-readout{color:var(--stamp); font-weight:700;}
+
+input[type=range]{
+  -webkit-appearance:none;
+  width:100%;
+  height:10px;
+  border-radius:2px;
+  background:repeating-linear-gradient(45deg,
+    #6b5f3a 0px, #6b5f3a 6px,
+    #b89a5f 6px, #b89a5f 10px,
+    #7a3b2e 10px, #7a3b2e 12px,
+    #b89a5f 12px, #b89a5f 16px);
+  outline:none;
+  box-shadow:0 1px 2px rgba(0,0,0,0.25) inset;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:38px;height:38px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><polygon points='30,0 34,10 24,10' fill='%232b2416'/><circle cx='30' cy='34' r='24' fill='%23c2a05f' stroke='%232b2416' stroke-width='2.5'/><circle cx='30' cy='34' r='18' fill='none' stroke='%232b2416' stroke-width='1.5' opacity='0.6'/><polygon points='30,20 33,30 43,30 35,36 38,46 30,40 22,46 25,36 17,30 27,30' fill='%232b2416'/></svg>");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border:none;
+  cursor:pointer;
+  filter:drop-shadow(0 2px 3px rgba(0,0,0,0.4));
+}
+input[type=range]::-moz-range-thumb{
+  width:38px;height:38px;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'><polygon points='30,0 34,10 24,10' fill='%232b2416'/><circle cx='30' cy='34' r='24' fill='%23c2a05f' stroke='%232b2416' stroke-width='2.5'/><circle cx='30' cy='34' r='18' fill='none' stroke='%232b2416' stroke-width='1.5' opacity='0.6'/><polygon points='30,20 33,30 43,30 35,36 38,46 30,40 22,46 25,36 17,30 27,30' fill='%232b2416'/></svg>");
+  background-repeat:no-repeat;
+  background-position:center;
+  background-size:contain;
+  border:none;
+  cursor:pointer;
+}
+
+.hint{margin-top:10px; font-size:11px; color:var(--ink-faint); font-style:italic;}
+
+.drag-cue{
+  text-align:center;
+  font-size:10.5px;
+  letter-spacing:2px;
+  color:var(--stamp);
+  margin-bottom:8px;
+  font-family:'Oswald', sans-serif;
+  font-weight:600;
+  transition:opacity 0.5s ease;
+}
+.drag-cue span{
+  display:inline-block;
+  animation:nudge 1.3s ease-in-out infinite;
+}
+.drag-cue span.right{animation-delay:0.15s;}
+.drag-cue.used{opacity:0;}
+@keyframes nudge{
+  0%,100%{transform:translateX(0); opacity:0.5;}
+  50%{transform:translateX(4px); opacity:1;}
+}
+.drag-cue span.left{animation-direction:reverse;}
+
+.briefing{
+  margin-top:22px;
+  border-top:1px solid var(--ink-faint);
+  padding-top:18px;
+  opacity:0;
+  max-height:0;
+  overflow:hidden;
+  transition:opacity 0.6s ease, max-height 0.6s ease;
+}
+.briefing.show{opacity:1; max-height:800px;}
+
+.row{
+  display:flex;
+  gap:14px;
+  padding:8px 0;
+  border-bottom:1px dotted rgba(43,36,22,0.35);
+  font-size:13px;
+}
+.row:last-child{border-bottom:none;}
+.row .k{
+  width:120px;
+  flex-shrink:0;
+  color:var(--ink-faint);
+  letter-spacing:1px;
+  font-size:10px;
+  padding-top:2px;
+  text-transform:uppercase;
+}
+.row .v{
+  color:var(--ink);
+  font-family:'Oswald', sans-serif;
+  font-weight:500;
+  font-size:14.5px;
+  letter-spacing:0.3px;
+}
+
+.scratchable{
+  position:relative;
+  display:inline-block;
+  padding:1px 2px;
+}
+.scratch-canvas{
+  position:absolute;
+  top:-3px;
+  left:-5px;
+  cursor:crosshair;
+  touch-action:none;
+}
+.scratch-hint{
+  font-size:10.5px;
+  font-style:italic;
+  color:var(--ink-faint);
+  margin:0 0 10px 0;
+}
+
+.briefing-note{
+  margin-top:14px;
+  font-size:11.5px;
+  line-height:1.75;
+  color:var(--ink-faint);
+}
+
+.footer{
+  margin-top:22px;
+  padding-top:14px;
+  border-top:1px solid var(--ink);
+  font-size:9.5px;
+  letter-spacing:1px;
+  color:var(--ink-faint);
+  display:flex;
+  justify-content:space-between;
+}
+
+@media (max-width:480px){
+  .row{flex-direction:column; gap:2px;}
+  .row .k{width:auto;}
+  .topbar{flex-direction:column; align-items:flex-start; gap:6px;}
+  .doc-id{text-align:left;}
+}
+</style>
+</head>
+<body>
+<div class="sheet-wrap">
+
+  <svg class="paperclip" viewBox="0 0 34 64">
+    <path d="M17 4 C25 4 30 10 30 18 L30 46 C30 54 24 60 16 60 C8 60 4 55 4 48 L4 20 C4 15 7 12 11 12 C15 12 17 15 17 19 L17 44"
+      fill="none" stroke="#8a8a8a" stroke-width="4" stroke-linecap="round"/>
+  </svg>
+
+  <div class="sheet">
+    <div class="stamp">CLASIFICADO</div>
+
+    <div class="topbar">
+      <span>MEMORANDO OPERATIVO<br>DISTRIBUCIÓN LIMITADA</span>
+      <span class="doc-id">DOC. N.º 07-MKU<br>COPIA ÚNICA</span>
+    </div>
+
+    <div class="body-pad">
+      <div class="eyebrow">COMUNICACIÓN DE COMANDO // PRIORIDAD ALFA</div>
+      <div class="emblem-row">
+        <svg class="emblem" width="42" height="42" viewBox="0 0 100 100">
+          <polygon points="50,4 96,50 50,96 4,50" fill="none" stroke="#2b2416" stroke-width="3"/>
+          <polygon points="50,22 78,64 22,64" fill="none" stroke="#2b2416" stroke-width="3"/>
+          <polygon points="50,22 64,64 50,64" fill="#2b2416" opacity="0.75"/>
+        </svg>
+        <h1>Operación MK Ultra</h1>
+      </div>
+
+      <p class="intro">Se convoca a su equipo, seleccionado por su nivel táctico y disciplina operativa, a participar de una partida privada de carácter exclusivo. La información completa se encuentra a continuación, sujeta a confirmación de frecuencia.</p>
+
+      <div class="cipher-box locked" id="cipherBox"></div>
+
+      <div class="tuner">
+        <div class="tuner-label">
+          <span>SINTONIZAR FRECUENCIA</span>
+          <span class="freq-readout" id="freqOut">88.0 MHz</span>
+        </div>
+        <div class="drag-cue" id="dragCue"><span class="left">◄</span>&nbsp;&nbsp;DESLICE LA MEDALLA&nbsp;&nbsp;<span class="right">►</span></div>
+        <input type="range" id="freqSlider" min="0" max="240" value="0" step="1">
+        <div class="hint" id="hintText">Deslice la medalla sobre la cinta hasta que el fragmento se aclare.</div>
+      </div>
+
+      <div class="briefing" id="briefing">
+        <div class="scratch-hint">Raspe cada recuadro tachado para revelar la información.</div>
+        <div class="row"><div class="k">Fecha</div><div class="v scratchable">05 SEPTIEMBRE</div></div>
+        <div class="row"><div class="k">Hora H</div><div class="v scratchable">14:30 HRS</div></div>
+        <div class="row"><div class="k">Zona de operación</div><div class="v scratchable">FORTALEZA INFINITA</div></div>
+        <div class="row"><div class="k">Formato</div><div class="v scratchable">REALISTA TÁCTICO OPERADOR</div></div>
+        <div class="row"><div class="k">Confirmar</div><div class="v scratchable">RESPONDER POR EL MISMO MEDIO (WHATSAPP) EN QUE RECIBIÓ ESTA TRANSMISIÓN</div></div>
+        <div class="briefing-note">Esta convocatoria es de carácter exclusivo. Se solicita discreción operacional: no reenviar fuera de los equipos convocados. Equipo táctico completo y comunicaciones propias requeridas.</div>
+      </div>
+
+      <div class="footer">
+        <span>ORIGEN: COMANDO MK ULTRA</span>
+        <span id="statusFooter">ESTADO: SIN DESCIFRAR</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const message = "OPERACION MK ULTRA ACTIVADA. EQUIPO SELECTO REQUERIDO. AJUSTE EL DIAL PARA RECIBIR COORDENADAS Y HORARIO DE DESPLIEGUE.";
+const cipherBox = document.getElementById('cipherBox');
+const slider = document.getElementById('freqSlider');
+const freqOut = document.getElementById('freqOut');
+const briefing = document.getElementById('briefing');
+const hintText = document.getElementById('hintText');
+const statusFooter = document.getElementById('statusFooter');
+
+const TARGET_SHIFT = 13;
+const TOLERANCE = 1;
+
+function caesarShift(text, shift){
+  return text.replace(/[A-Z]/g, c=>{
+    const code = ((c.charCodeAt(0)-65+shift)%26+26)%26;
+    return String.fromCharCode(code+65);
+  });
+}
+
+function scramble(text, noise){
+  const chars = "#%&*XQZ$@";
+  return text.split('').map(c=>{
+    if(c===' ' || c==='.') return c;
+    if(Math.random() < noise) return chars[Math.floor(Math.random()*chars.length)];
+    return c;
+  }).join('');
+}
+
+function render(){
+  const raw = slider.value / 10;
+  freqOut.textContent = (88 + raw).toFixed(1) + " MHz";
+
+  const shiftVal = Math.round(slider.value / (240/25));
+  const distance = Math.abs(shiftVal - TARGET_SHIFT);
+  const encoded = caesarShift(message, TARGET_SHIFT);
+  const attempted = caesarShift(encoded, -shiftVal);
+
+  if(distance <= TOLERANCE){
+    cipherBox.classList.remove('locked');
+    cipherBox.classList.add('decoded');
+    cipherBox.textContent = message;
+    briefing.classList.add('show');
+    hintText.textContent = "Frecuencia sintonizada. Fragmento transcrito.";
+    statusFooter.textContent = "ESTADO: DESCIFRADO";
+    setTimeout(initScratch, 350);
+  } else {
+    cipherBox.classList.remove('decoded');
+    cipherBox.classList.add('locked');
+    const noise = Math.min(0.85, distance / 13);
+    cipherBox.textContent = scramble(attempted, noise);
+    hintText.textContent = distance <= 4
+      ? "Casi en frecuencia. Ajuste con precisión."
+      : "Deslice la medalla sobre la cinta hasta que el fragmento se aclare.";
+    briefing.classList.remove('show');
+    statusFooter.textContent = "ESTADO: SIN DESCIFRAR";
+  }
+}
+
+slider.addEventListener('input', render);
+slider.addEventListener('input', ()=>{
+  document.getElementById('dragCue').classList.add('used');
+}, {once:true});
+render();
+
+setInterval(()=>{
+  if(cipherBox.classList.contains('locked')) render();
+}, 900);
+
+let scratchReady = false;
+function setupScratchCanvas(container){
+  const canvas = document.createElement('canvas');
+  canvas.className = 'scratch-canvas';
+  container.appendChild(canvas);
+  const ctx = canvas.getContext('2d');
+  const w = container.offsetWidth + 8;
+  const h = container.offsetHeight + 6;
+  canvas.width = w;
+  canvas.height = h;
+
+  ctx.fillStyle = '#1c1710';
+  ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  for(let i=-h;i<w;i+=6){
+    ctx.beginPath();
+    ctx.moveTo(i,0);
+    ctx.lineTo(i+h,h);
+    ctx.stroke();
+  }
+  ctx.fillStyle = 'rgba(230,218,184,0.5)';
+  ctx.font = '8px monospace';
+  for(let tx=4; tx<w; tx+=46){
+    ctx.fillText('TACHADO', tx, h/2+3);
+  }
+
+  let drawing = false;
+  function erase(x,y){
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.beginPath();
+    ctx.arc(x,y,13,0,Math.PI*2);
+    ctx.fill();
+  }
+  function pos(e){
+    const r = canvas.getBoundingClientRect();
+    const cx = (e.touches ? e.touches[0].clientX : e.clientX) - r.left;
+    const cy = (e.touches ? e.touches[0].clientY : e.clientY) - r.top;
+    return {x:cx,y:cy};
+  }
+  function start(e){ drawing = true; const p = pos(e); erase(p.x,p.y); }
+  function move(e){ if(!drawing) return; e.preventDefault(); const p = pos(e); erase(p.x,p.y); }
+  function stop(){ drawing = false; }
+
+  canvas.addEventListener('mousedown', start);
+  canvas.addEventListener('mousemove', move);
+  window.addEventListener('mouseup', stop);
+  canvas.addEventListener('touchstart', start);
+  canvas.addEventListener('touchmove', move);
+  canvas.addEventListener('touchend', stop);
+}
+
+function initScratch(){
+  if(scratchReady) return;
+  scratchReady = true;
+  document.querySelectorAll('.scratchable').forEach(setupScratchCanvas);
+}
+</script>
+</body>
+</html>
